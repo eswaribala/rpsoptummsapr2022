@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: policyholderdeploy
+  name: policyholderdeploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: policyholderdeploy
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: policyholderdeploy
+    spec:
+      containers:
+      - image: eswaribala/optumapr2022repo:policyholderappv1
+        name: policyholder-c1
+        resources: {}          
+        
+        env:
+            - name: MYSQL_URL
+              value: jdbc:mysql://mysql:3306/vcustomerdb?useSSL=false
+      #imagePullSecrets:  
+      #- name: globalaks-key
+
+status: {}
+--- 
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: policyholderservice
+  name: policyholderservice
+spec:
+    
+  ports:
+  - protocol: TCP
+    port: 7072
+    targetPort: 7074
+    name: http
+  
+  selector:
+    app: policyholderdeploy
+  type: ClusterIP
+status:
+  loadBalancer: {}
