@@ -1,0 +1,42 @@
+Uninstall kubernetes
+==================================
+kubeadm reset
+sudo apt-get purge kubeadm kubectl kubelet kubernetes-cni kube*
+sudo apt-get autoremove
+sudo rm -rf ~/.kube
+sudo rm -rf ~/.minikube
+sudo rm -rf /var/lib/minikube
+sudo rm -rf /var/lib/kubelet
+sudo rm -rf /var/lib/localkube
+sudo rm -rf /data/minikube
+sudo rm -rf /var/lib/kubeadm.yaml
+=======================================
+Install Kubernetes
+====================================
+sudo apt-get update -y
+sudo apt-get upgrade -y
+sudo apt-get install curl
+sudo apt-get install apt-transport-https
+sudo apt install virtualbox virtualbox-ext-pack
+wget https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+sudo cp minikube-linux-amd64 /usr/local/bin/minikube
+sudo chmod 755 /usr/local/bin/minikube
+minikube version
+curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
+chmod +x ./kubectl
+sudo mv ./kubectl /usr/local/bin/kubectl
+kubectl version -o json
+minikube start 
+kubectl config view
+kubectl cluster-info
+
+
+#custom configuration
+minikube config set memory 4096
+minikube config set cpus 2
+minikube config set vm-driver virtualbox
+minikube start
+minikube start -p cluster1 
+minikube status
+--------------------------------------------------------------
+minikube -p cluster1 dashboard
